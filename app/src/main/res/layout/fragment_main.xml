@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.shoppinfever.fragments.LoginFragment">
+
+    <!--<com.facebook.widget.LoginButton
+        xmlns:fb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fbLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        fb:login_text=""
+        fb:logout_text=""
+        android:scaleType="centerInside" />-->
+    <Button
+        android:id="@+id/fbLoginButton"
+        android:layout_width="match_parent"
+        android:text="@string/fblogin"
+        android:layout_height="60dp"
+        android:layout_above="@+id/gLoginButton"
+        android:layout_alignParentStart="true"/>
+    <Button
+        android:id="@+id/gLoginButton"
+        android:layout_width="match_parent"
+        android:text="@string/glogin"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"/>
+
+
+</RelativeLayout>

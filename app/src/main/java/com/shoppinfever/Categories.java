@@ -1,4 +1,4 @@
-package com.brandfiva;
+package com.shoppinfever;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class Categories extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -80,9 +78,9 @@ public class Categories extends AppCompatActivity
                     height
                                          );
         }
-        Toast.makeText(this, "height/2 : "+height/2, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "height/2+32 : "+(height/2+32), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "height : "+height, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "height/2 : "+height/2, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "height/2+32 : "+(height/2+32), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "height : "+height, Toast.LENGTH_SHORT).show();
         LinearLayout navigationDrawerHeader = (LinearLayout) findViewById(R.id.navigationDrawerHeader);
         BitmapDrawable background = new BitmapDrawable(getResources(),blurred);
         navigationDrawerHeader.setBackground(background);

@@ -1,4 +1,4 @@
-package com.brandfiva;
+package com.shoppinfever;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

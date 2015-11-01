@@ -9,6 +9,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_categories" tools:context=".Categories">
 
-    <TextView android:text="Hello World!" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.shoppinfever.fragments.LoginFragment"
+        android:id="@+id/facebookLoginId"
+        />
 </RelativeLayout>

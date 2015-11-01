@@ -1,4 +1,4 @@
-package com.brandfiva;
+package com.shoppinfever;
 
 /**
  * Created by Saleem Khan on 10/11/2015.

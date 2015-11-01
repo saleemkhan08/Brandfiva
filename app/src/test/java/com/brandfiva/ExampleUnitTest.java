@@ -1,4 +1,4 @@
-package com.brandfiva;
+package com.shoppinfever;
 
 import org.junit.Test;
 
