@@ -53,8 +53,7 @@ import java.util.Map;
 
 public class LoginFragment extends Fragment implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.OnConnectionFailedListener {
     private CallbackManager mCallbackManager;
     private static final String SERVER_CLIENT_ID = "222396816157-k4e4k9oi2b1cc4nnq3oksac4l9866rqa.apps.googleusercontent.com";
     /* Is there a ConnectionResult resolution in progress? */
@@ -77,20 +76,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
 
-    public LoginFragment()
-    {
+    public LoginFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
         Util.setContext(getActivity()); // For Toast and Logs
 
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
             mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
         }
@@ -107,23 +103,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
 
     // [START on_start_on_stop]
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         mGoogleApiClient.disconnect();
     }
     // [END on_start_on_stop]
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_IS_RESOLVING, mIsResolving);
         outState.putBoolean(KEY_SHOULD_RESOLVE, mShouldResolve);
@@ -131,8 +124,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         view.findViewById(R.id.fbLoginButton).setOnClickListener(this);
         view.findViewById(R.id.gLoginButton).setOnClickListener(this);
@@ -140,24 +132,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
         return view;
     }
 
-    private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>()
-    {
+    private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
-        public void onSuccess(LoginResult loginResult)
-        {
+        public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            if (profile != null)
-            {
+            if (profile != null) {
                 GraphRequest request = GraphRequest.newMeRequest(
                         accessToken,
-                        new GraphRequest.GraphJSONObjectCallback()
-                        {
+                        new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(
                                     JSONObject object,
-                                    GraphResponse response)
-                            {
+                                    GraphResponse response) {
                                 sendData(response);
                                 Util.log(response.toString());
                                 //sendData(profile);
@@ -167,35 +154,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
                 parameters.putString("fields", "id,name,email");
                 request.setParameters(parameters);
                 request.executeAsync();
-            }
-            else
-            {
+            } else {
                 Util.toast("profile is null");
             }
         }
 
         @Override
-        public void onCancel()
-        {
+        public void onCancel() {
             Util.toast("Login Canceled");
 
         }
 
         @Override
-        public void onError(FacebookException error)
-        {
+        public void onError(FacebookException error) {
             Util.toast("Something went wrong!");
         }
     };
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Util.log("onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
-        if (requestCode == RC_SIGN_IN)
-        {
+        if (requestCode == RC_SIGN_IN) {
             /*// If the error resolution was not successful we should not resolve further.
             if (resultCode != RESULT_OK) {
                 mShouldResolve = false;
@@ -205,51 +186,39 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
 
             mIsResolving = false;
             mGoogleApiClient.connect();
-        }
-        else
-        {
+        } else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    public static void sendData(final GraphResponse response)
-    {
+    public static void sendData(final GraphResponse response) {
         // Util.toast("Started");
         RequestQueue queue = VolleySingleton.getInstance().getmRequestQueue();
         String url = "http://shoppinfever-thnkin.rhcloud.com/JsonServerTest/ReceiveData";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         Util.toast(response);
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         Util.toast(error.toString());
                     }
                 }
-        )
-        {
+        ) {
             @Override
-            protected Map<String, String> getParams()
-            {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                try
-                {
+                try {
                     params.put("name", response.getJSONObject().getString("name"));
 
                     params.put("email", response.getJSONObject().getString("email"));
 
                     params.put("id", response.getJSONObject().getString("id"));
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     Util.toast(e.toString());
                 }
                 params.put("service", "Facebook");
@@ -261,20 +230,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if (v.getId() == R.id.fbLoginButton)
-        {
+    public void onClick(View v) {
+        if (v.getId() == R.id.fbLoginButton) {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        }
-        else if (v.getId() == R.id.gLoginButton)
-        {
+        } else if (v.getId() == R.id.gLoginButton) {
             onSignInClicked();
         }
     }
 
-    private void onSignInClicked()
-    {
+    private void onSignInClicked() {
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
         mShouldResolve = true;
@@ -284,8 +248,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
     }
 
     @Override
-    public void onConnected(Bundle bundle)
-    {
+    public void onConnected(Bundle bundle) {
         Util.log("onConnected:" + bundle);
         mShouldResolve = false;
 
@@ -293,71 +256,53 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
     }
 
     @Override
-    public void onConnectionSuspended(int i)
-    {
+    public void onConnectionSuspended(int i) {
 
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 // Could not connect to Google Play Services.  The user needs to select an account,
         // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
         // ConnectionResult to see possible error codes.
         Util.log("onConnectionFailed:" + connectionResult);
 
-        if (!mIsResolving && mShouldResolve)
-        {
-            if (connectionResult.hasResolution())
-            {
-                try
-                {
+        if (!mIsResolving && mShouldResolve) {
+            if (connectionResult.hasResolution()) {
+                try {
                     connectionResult.startResolutionForResult(getActivity(), RC_SIGN_IN);
                     mIsResolving = true;
-                }
-                catch (IntentSender.SendIntentException e)
-                {
+                } catch (IntentSender.SendIntentException e) {
                     Util.log("Could not resolve ConnectionResult:" + e);
                     mIsResolving = false;
                     mGoogleApiClient.connect();
                 }
-            }
-            else
-            {
+            } else {
                 // Could not resolve the connection result, show the user an
                 // error dialog.
                 showErrorDialog(connectionResult);
             }
-        }
-        else
-        {
+        } else {
             // Show the signed-out UI
             //showSignedOutUI();
         }
     }
 
-    private void showErrorDialog(ConnectionResult connectionResult)
-    {
+    private void showErrorDialog(ConnectionResult connectionResult) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(getActivity());
 
-        if (resultCode != ConnectionResult.SUCCESS)
-        {
-            if (apiAvailability.isUserResolvableError(resultCode))
-            {
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
                 apiAvailability.getErrorDialog(getActivity(), resultCode, RC_SIGN_IN,
-                        new DialogInterface.OnCancelListener()
-                        {
+                        new DialogInterface.OnCancelListener() {
                             @Override
-                            public void onCancel(DialogInterface dialog)
-                            {
+                            public void onCancel(DialogInterface dialog) {
                                 mShouldResolve = false;
                                 //showSignedOutUI();
                             }
                         }).show();
-            }
-            else
-            {
+            } else {
                 Util.log("Google Play Services Error:" + connectionResult);
                 String errorString = apiAvailability.getErrorString(resultCode);
                 Util.toast(errorString);
@@ -368,43 +313,32 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Act
         }
     }
 
-    private class GetIdTokenTask extends AsyncTask<Void, Void, String>
-    {
+    private class GetIdTokenTask extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected String doInBackground(Void... params)
-        {
+        protected String doInBackground(Void... params) {
             String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
             Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
 
             String scopes = "audience:server:client_id:" + SERVER_CLIENT_ID; // Not the app's client ID.
-            try
-            {
+            try {
                 return GoogleAuthUtil.getToken(MyApplication.getAppContext(), account, scopes);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 Util.log("Error retrieving ID token." + e);
                 return null;
-            }
-            catch (GoogleAuthException e)
-            {
+            } catch (GoogleAuthException e) {
                 Util.log("Error retrieving ID token." + e);
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(String result)
-        {
+        protected void onPostExecute(String result) {
             Util.log("ID token: " + result);
-            if (result != null)
-            {
+            if (result != null) {
                 // Successfully retrieved ID Token
                 // ...
-            }
-            else
-            {
+            } else {
                 // There was some error getting the ID Token
                 // ...
             }
