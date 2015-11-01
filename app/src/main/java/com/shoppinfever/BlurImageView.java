@@ -16,6 +16,8 @@ import android.renderscript.ScriptIntrinsicBlur;
 
 public class BlurImageView
 {
+
+    //test
     public static Bitmap drawableToBitmap (Drawable drawable) {
         Bitmap bitmap = null;
 
